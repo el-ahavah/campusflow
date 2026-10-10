@@ -18,3 +18,20 @@ def view_ticket(tickets, ticket_id):
             return ticket
 
     return None
+
+
+def assign_ticket(tickets, ticket_id, staff_name):
+    ticket = view_ticket(tickets, ticket_id)
+
+    if ticket is None:
+        return "Ticket not found."
+
+    if ticket["status"] == "resolved":
+        return "Cannot assign a resolved ticket. Reopen it first."
+
+    if not isinstance(staff_name, str) or not staff_name.strip():
+        return "Staff name cannot be empty."
+
+    ticket["assigned_to"] = staff_name.strip()
+
+    return "Ticket assigned successfully."
