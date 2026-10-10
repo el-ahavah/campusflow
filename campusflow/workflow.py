@@ -35,3 +35,42 @@ def assign_ticket(tickets, ticket_id, staff_name):
     ticket["assigned_to"] = staff_name.strip()
 
     return "Ticket assigned successfully."
+
+
+def update_ticket_status(tickets, ticket_id, new_status):
+    ticket = view_ticket(tickets, ticket_id)
+
+    if ticket is None:
+        return "Ticket not found."
+
+    current_status = ticket["status"]
+
+    if current_status == "resolved":
+        return "Resolved tickets must be reopened first."
+
+    if current_status == "open" and new_status == "in_progress":
+        if not ticket["assigned_to"]:
+            return "Assign the ticket before starting work."
+
+        ticket["status"] = "in_progress"
+        return "Ticket is now in progress."
+
+    if current_status == "in_progress" and new_status == "resolved":
+        ticket["status"] = "resolved"
+        return "Ticket resolved successfully."
+
+    return "Invalid status transition."
+
+
+def reopen_ticket(tickets, ticket_id):
+    ticket = view_ticket(tickets, ticket_id)
+
+    if ticket is None:
+        return "Ticket not found."
+
+    if ticket["status"] != "resolved":
+        return "Only resolved tickets can be reopened."
+
+    ticket["status"] = "open"
+
+    return "Ticket reopened successfully."
