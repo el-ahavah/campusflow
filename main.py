@@ -5,7 +5,8 @@ from campusflow.workflow import (
     view_ticket,
     assign_ticket,
     update_ticket_status,
-    reopen_ticket
+    reopen_ticket,
+    get_work_queue
 )
 
 def display_menu():
@@ -131,8 +132,25 @@ def main():
             result = reopen_ticket(tickets, ticket_id)
 
             print(f"\n{result}")
+
+        elif choice == "7":
+            print("\n--- Priority Work Queue ---")
+
+            work_queue = get_work_queue(tickets)
+
+            if not work_queue:
+                print("No open tickets in the work queue.")
+
+            else:
+                for ticket in work_queue:
+                    print(
+                        f"ID: {ticket['id']} | "
+                        f"Title: {ticket['title']} | "
+                        f"Priority: {ticket['priority']} | "
+                        f"Status: {ticket['status']}"
+                    )
             
-        elif choice in ("7", "8"):
+        elif choice in ("8"):
             print(f"\nOption {choice} is not implemented yet.")
 
         else:
