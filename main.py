@@ -4,7 +4,8 @@ from campusflow.workflow import (
     list_tickets,
     view_ticket,
     assign_ticket,
-    update_ticket_status
+    update_ticket_status,
+    reopen_ticket
 )
 
 def display_menu():
@@ -121,8 +122,17 @@ def main():
             result = update_ticket_status(tickets, ticket_id, new_status)
 
             print(f"\n{result}")
+
+        elif choice == "6":
+            print("\n--- Reopen Ticket ---")
+
+            ticket_id = input("Enter ticket ID: ").strip().upper()
+
+            result = reopen_ticket(tickets, ticket_id)
+
+            print(f"\n{result}")
             
-        elif choice in ("6", "7", "8"):
+        elif choice in ("7", "8"):
             print(f"\nOption {choice} is not implemented yet.")
 
         else:
