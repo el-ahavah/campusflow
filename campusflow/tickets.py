@@ -49,3 +49,39 @@ def validate_ticket_input(title, category, urgency, affected_users):
 
     return title.strip(), category, urgency, affected_users
 
+
+
+
+
+def generate_ticket_id(existing_tickets):
+    """Generate the next ticket ID, such as T001 or T002."""
+
+    highest_number = 0
+
+    for ticket in existing_tickets:
+        ticket_id = ticket.get("id", "")
+
+        if ticket_id.startswith("T") and ticket_id[1:].isdigit():
+            number = int(ticket_id[1:])
+            #highest_number = max(highest_number, number)
+            if number > highest_number:
+                highest_number = number
+
+    return f"T{highest_number + 1:03d}"
+
+
+existing_tickets = [
+    {"id": "T001"},
+    {"id": "T002"},
+    {"id": "T005"}
+]
+
+new_ticket_id = generate_ticket_id(existing_tickets)
+
+print(new_ticket_id)
+
+existing_tickets = []
+
+new_ticket_id = generate_ticket_id(existing_tickets)
+
+print(new_ticket_id)
