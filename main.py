@@ -12,6 +12,8 @@ from campusflow.workflow import (
 
 from campusflow.reports import generate_report
 
+from campusflow.storage import load_tickets, save_tickets
+
 
 def display_menu():
     print("\n========== CAMPUSFLOW ==========")
@@ -29,7 +31,12 @@ def display_menu():
 
 
 def main():
-    tickets = []
+
+    try:
+        tickets = load_tickets()
+    except (ValueError, OSError) as error:
+        print(f"Unable to load tickets: {error}")
+        return
 
     while True:
         display_menu()
@@ -61,6 +68,8 @@ def main():
                 )
                 
                 tickets.append(new_ticket)
+
+                save_tickets(tickets)
                 
                 print(f"\nTicket {new_ticket['id']} created successfully!")
                 print(f"Priority: {new_ticket['priority']}")
@@ -101,6 +110,9 @@ def main():
 
             result = assign_ticket(tickets, ticket_id, staff_name)
 
+            if result == "Ticket assigned successfully.":
+                save_tickets(tickets)
+
             print(f"\n{result}")
 
         elif choice == "5":
@@ -126,6 +138,12 @@ def main():
 
             result = update_ticket_status(tickets, ticket_id, new_status)
 
+            if result in (
+                "Ticket is now in progress.",
+                "Ticket resolved successfully."
+            ):
+                save_tickets(tickets)
+
             print(f"\n{result}")
 
         elif choice == "6":
@@ -134,6 +152,9 @@ def main():
             ticket_id = input("Enter ticket ID: ").strip().upper()
 
             result = reopen_ticket(tickets, ticket_id)
+
+            if result == "Ticket reopened successfully.":
+                save_tickets(tickets)
 
             print(f"\n{result}")
 
