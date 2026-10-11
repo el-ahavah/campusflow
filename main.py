@@ -1,6 +1,6 @@
 from try_integration import create_ticket
 # from campusflow.tickets import create_ticket
-from campusflow.workflow import list_tickets, view_ticket
+from campusflow.workflow import list_tickets, view_ticket, assign_ticket
 
 def display_menu():
     print("\n========== CAMPUSFLOW ==========")
@@ -81,8 +81,18 @@ def main():
                 print(f"Priority: {ticket['priority']}")
                 print(f"Status: {ticket['status']}")
                 print(f"Assigned To: {ticket['assigned_to'] or 'Unassigned'}")
+
+        elif choice == "4":
+            print("\n--- Assign Ticket ---")
+
+            ticket_id = input("Enter ticket ID: ").strip().upper()
+            staff_name = input("Enter staff name: ").strip()
+
+            result = assign_ticket(tickets, ticket_id, staff_name)
+
+            print(f"\n{result}")
             
-        elif choice in ("4", "5", "6", "7", "8"):
+        elif choice in ("5", "6", "7", "8"):
             print(f"\nOption {choice} is not implemented yet.")
 
         else:
