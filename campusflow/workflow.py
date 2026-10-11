@@ -74,3 +74,27 @@ def reopen_ticket(tickets, ticket_id):
     ticket["status"] = "open"
 
     return "Ticket reopened successfully."
+
+
+def get_work_queue(tickets):
+    priority_order = {
+        "critical": 0,
+        "high": 1,
+        "medium": 2,
+        "low": 3
+    }
+
+    open_tickets = [
+        ticket for ticket in tickets
+        if ticket["status"] == "open"
+    ]
+
+    sorted_tickets = sorted(
+        open_tickets,
+        key=lambda ticket: (
+            priority_order[ticket["priority"]],
+            int(ticket["id"][1:])
+        )
+    )
+
+    return sorted_tickets

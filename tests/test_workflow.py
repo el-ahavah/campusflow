@@ -3,6 +3,7 @@ import unittest
 from campusflow.workflow import view_ticket
 from campusflow.workflow import assign_ticket
 from campusflow.workflow import update_ticket_status, reopen_ticket
+from campusflow.workflow import get_work_queue
 
 class TestViewTicket(unittest.TestCase):
 
@@ -148,6 +149,54 @@ class TestTicketLifecycle(unittest.TestCase):
         )
 
         self.assertEqual(result, "Ticket not found.")
+
+
+class TestWorkQueue(unittest.TestCase):
+
+    def test_priority_order(self):
+        tickets = [
+            {"id": "T001", "priority": "low", "status": "open"},
+            {"id": "T002", "priority": "critical", "status": "open"},
+            {"id": "T003", "priority": "high", "status": "open"},
+            {"id": "T004", "priority": "medium", "status": "open"}
+        ]
+
+        queue = get_work_queue(tickets)
+
+        self.assertEqual(
+            [ticket["id"] for ticket in queue],
+            ["T002", "T003", "T004", "T001"]
+        )
+
+    def test_excludes_non_open_tickets(self):
+        tickets = [
+            {"id": "T001", "priority": "critical", "status": "resolved"},
+            {"id": "T002", "priority": "high", "status": "in_progress"},
+            {"id": "T003", "priority": "low", "status": "open"}
+        ]
+
+        queue = get_work_queue(tickets)
+
+        self.assertEqual(
+            [ticket["id"] for ticket in queue],
+            ["T003"]
+        )
+
+    def test_numeric_id_order(self):
+        tickets = [
+            {"id": "T010", "priority": "high", "status": "open"},
+            {"id": "T002", "priority": "high", "status": "open"}
+        ]
+
+        queue = get_work_queue(tickets)
+
+        self.assertEqual(
+            [ticket["id"] for ticket in queue],
+            ["T002", "T010"]
+        )
+
+    def test_empty_queue(self):
+        self.assertEqual(get_work_queue([]), [])
 
 
 if __name__ == "__main__":
