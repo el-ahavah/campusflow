@@ -1,4 +1,6 @@
-from campusflow.workflow import list_tickets
+from try_integration import create_ticket
+# from campusflow.tickets import create_ticket
+from campusflow.workflow import list_tickets, view_ticket
 
 def display_menu():
     print("\n========== CAMPUSFLOW ==========")
@@ -27,10 +29,60 @@ def main():
             print("\nThank you for using CampusFlow!")
             break
 
+        elif choice == "1":
+            print("\n--- Create New Ticket ---")
+            
+            title = input("Enter ticket title: ")
+            category = input("Enter category (Network/Hardware/Software/Other): ")
+            urgency = input("Enter urgency (low/medium/high): ")
+            affected_users_input = input("Enter number of affected users: ")
+            
+            try:
+                affected_users = int(affected_users_input)
+                
+                new_ticket = create_ticket(
+                    title,
+                    category,
+                    urgency,
+                    affected_users,
+                    tickets
+                    
+                )
+                
+                tickets.append(new_ticket)
+                
+                print(f"\nTicket {new_ticket['id']} created successfully!")
+                print(f"Priority: {new_ticket['priority']}")
+            
+            except ValueError as error:
+                print(f"\nCould not create ticket: {error}")
+
         elif choice == "2":
             list_tickets(tickets)
+
+        elif choice == "3":
+            print("\n--- View Ticket ---")
             
-        elif choice in ("1", "3", "4", "5", "6", "7", "8"):
+            ticket_id = input("Enter ticket ID: ").strip().upper()
+
+            ticket = view_ticket(tickets, ticket_id)
+
+            if ticket is None:
+                print("\nTicket not found.")
+
+            else:
+                print("\nTicket Details")
+                print("--------------------------")
+                print(f"ID: {ticket['id']}")
+                print(f"Title: {ticket['title']}")
+                print(f"Category: {ticket['category']}")
+                print(f"Urgency: {ticket['urgency']}")
+                print(f"Affected Users: {ticket['affected_users']}")
+                print(f"Priority: {ticket['priority']}")
+                print(f"Status: {ticket['status']}")
+                print(f"Assigned To: {ticket['assigned_to'] or 'Unassigned'}")
+            
+        elif choice in ("4", "5", "6", "7", "8"):
             print(f"\nOption {choice} is not implemented yet.")
 
         else:
