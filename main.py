@@ -1,5 +1,6 @@
-from try_integration import create_ticket
-# from campusflow.tickets import create_ticket
+# from try_integration import create_ticket
+from campusflow.tickets import create_ticket
+
 from campusflow.workflow import (
     list_tickets,
     view_ticket,
@@ -8,6 +9,9 @@ from campusflow.workflow import (
     reopen_ticket,
     get_work_queue
 )
+
+from campusflow.reports import generate_report
+
 
 def display_menu():
     print("\n========== CAMPUSFLOW ==========")
@@ -149,9 +153,25 @@ def main():
                         f"Priority: {ticket['priority']} | "
                         f"Status: {ticket['status']}"
                     )
-            
-        elif choice in ("8"):
-            print(f"\nOption {choice} is not implemented yet.")
+
+        elif choice == "8":
+            print("\n========== CAMPUSFLOW REPORT ==========")
+
+            report = generate_report(tickets)
+
+            print(f"\nTotal Tickets: {report['total']}")
+
+            print("\nTickets by Status:")
+            print(f"  Open: {report['by_status']['open']}")
+            print(f"  In Progress: {report['by_status']['in_progress']}")
+            print(f"  Resolved: {report['by_status']['resolved']}")
+
+            print("\nTickets by Priority:")
+            print(f"  Critical: {report['by_priority']['critical']}")
+            print(f"  High: {report['by_priority']['high']}")
+            print(f"  Medium: {report['by_priority']['medium']}")
+            print(f"  Low: {report['by_priority']['low']}")
+
 
         else:
             print("\nInvalid option. Please enter a number from 1 to 9.")
