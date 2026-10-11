@@ -112,6 +112,9 @@ class TestCreateTicket(unittest.TestCase):
         self.assertEqual(ticket["urgency"], "high")
         self.assertEqual(ticket["affected_users"], 12)
         self.assertEqual(ticket["priority"], "critical")
+        self.assertEqual(ticket["status"], "open")
+        self.assertIsNone(ticket["assigned_to"])
+
 
     def test_create_ticket_rejects_blank_title(self):
         existing_tickets = []
@@ -124,7 +127,6 @@ class TestCreateTicket(unittest.TestCase):
                 12,
                 existing_tickets
             )
-
 
 if __name__ == "__main__":
     unittest.main()
