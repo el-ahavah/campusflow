@@ -1,6 +1,6 @@
 
 import unittest
-from campusflow.tickets import calculate_priority, validate_ticket_input, generate_ticket_id
+from campusflow.tickets import calculate_priority, validate_ticket_input, generate_ticket_id, create_ticket
 
 class TestCalculatePriority(unittest.TestCase):
 
@@ -88,6 +88,42 @@ class TestGenerateTicketId(unittest.TestCase):
         self.assertEqual(result, "T006")
 
 
+
+
+
+class TestCreateTicket(unittest.TestCase):   
+    def test_create_ticket_successfully(self):
+        existing_tickets = [
+            {"id": "T001"},
+            {"id": "T002"}
+        ]
+
+        ticket = create_ticket(
+            "Wi-Fi is down",
+            "NETWORK",
+            "HIGH",
+            12,
+            existing_tickets
+        )
+
+        self.assertEqual(ticket["id"], "T003")
+        self.assertEqual(ticket["title"], "Wi-Fi is down")
+        self.assertEqual(ticket["category"], "Network")
+        self.assertEqual(ticket["urgency"], "high")
+        self.assertEqual(ticket["affected_users"], 12)
+        self.assertEqual(ticket["priority"], "critical")
+
+    def test_create_ticket_rejects_blank_title(self):
+        existing_tickets = []
+
+        with self.assertRaises(ValueError):
+            create_ticket(
+                "",
+                "Network",
+                "high",
+                12,
+                existing_tickets
+            )
 
 
 if __name__ == "__main__":
