@@ -70,18 +70,81 @@ def generate_ticket_id(existing_tickets):
     return f"T{highest_number + 1:03d}"
 
 
-existing_tickets = [
-    {"id": "T001"},
-    {"id": "T002"},
-    {"id": "T005"}
-]
+# existing_tickets = [
+#     {"id": "T001"},
+#     {"id": "T002"},
+#     {"id": "T005"}
+# ]
 
-new_ticket_id = generate_ticket_id(existing_tickets)
+# new_ticket_id = generate_ticket_id(existing_tickets)
 
-print(new_ticket_id)
+# print(new_ticket_id)
 
-existing_tickets = []
+# existing_tickets = []
 
-new_ticket_id = generate_ticket_id(existing_tickets)
+# new_ticket_id = generate_ticket_id(existing_tickets)
 
-print(new_ticket_id)
+# print(new_ticket_id)
+
+
+
+def create_ticket(title, category, urgency, affected_users, existing_tickets):
+    """Validate input and create a complete ticket."""
+
+    # Step 1: Validate the ticket information
+    title, category, urgency, affected_users = validate_ticket_input(
+        title, category, urgency, affected_users
+    )
+
+    # Step 2: Generate the ticket ID
+    ticket_id = generate_ticket_id(existing_tickets)
+
+    priority = calculate_priority(urgency, affected_users)
+
+    # dictionary
+    ticket = {
+        "id": ticket_id,
+        "title": title,
+        "category": category,
+        "urgency": urgency,
+        "affected_users": affected_users,
+        "priority": priority
+    }
+
+    return ticket
+
+
+# existing_tickets = [
+#     {"id": "T001"},
+#     {"id": "T002"},
+#     {"id": "T005"}
+# ]
+
+# try:
+#     new_ticket = create_ticket(
+#         "Wi-Fi is down",
+#         "NETWORK",
+#         "HIGH",
+#         12,
+#         existing_tickets
+#     )
+
+#     print(new_ticket)
+
+# except ValueError as error:
+#     print("Could not create ticket:", error)
+
+# print("\nTesting invalid ticket:")
+
+# try:
+#     new_ticket = create_ticket(
+#         "",
+#         "Network",
+#         "high",
+#         12,
+#         existing_tickets
+#     )
+#     print(new_ticket)
+
+# except ValueError as error:
+#     print("Ticket creation failed:", error)
