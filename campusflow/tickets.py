@@ -103,14 +103,15 @@ def create_ticket(title, category, urgency, affected_users, existing_tickets):
 
     # dictionary
     ticket = {
-        "id": ticket_id,
-        "title": title,
-        "category": category,
-        "urgency": urgency,
-        "affected_users": affected_users,
-        "priority": priority
-    }
-
+    "id": ticket_id,
+    "title": title,
+    "category": category,
+    "urgency": urgency,
+    "affected_users": affected_users,
+    "priority": priority,
+    "status": "open",
+    "assigned_to": None
+}
     return ticket
 
 
