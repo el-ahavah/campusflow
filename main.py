@@ -1,6 +1,11 @@
 from try_integration import create_ticket
 # from campusflow.tickets import create_ticket
-from campusflow.workflow import list_tickets, view_ticket, assign_ticket
+from campusflow.workflow import (
+    list_tickets,
+    view_ticket,
+    assign_ticket,
+    update_ticket_status
+)
 
 def display_menu():
     print("\n========== CAMPUSFLOW ==========")
@@ -91,8 +96,33 @@ def main():
             result = assign_ticket(tickets, ticket_id, staff_name)
 
             print(f"\n{result}")
+
+        elif choice == "5":
+            print("\n--- Update Ticket Status ---")
+
+            ticket_id = input("Enter ticket ID: ").strip().upper()
+
+            print("\nAvailable status updates:")
+            print("1. Start Work (in_progress)")
+            print("2. Resolve Ticket (resolved)")
+
+            status_choice = input("Choose an option (1-2): ").strip()
+
+            if status_choice == "1":
+                new_status = "in_progress"
+
+            elif status_choice == "2":
+                new_status = "resolved"
+
+            else:
+                print("\nInvalid status option.")
+                continue
+
+            result = update_ticket_status(tickets, ticket_id, new_status)
+
+            print(f"\n{result}")
             
-        elif choice in ("5", "6", "7", "8"):
+        elif choice in ("6", "7", "8"):
             print(f"\nOption {choice} is not implemented yet.")
 
         else:
